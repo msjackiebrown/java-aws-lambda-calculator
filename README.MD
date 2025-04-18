@@ -1,12 +1,12 @@
 # AWS Lambda Calculator
 
-A serverless calculator application built using AWS Lambda and Java 21. This service provides basic arithmetic operations through a REST API endpoint.
+A serverless calculator application built using AWS Lambda and Java 21. This service provides basic arithmetic operations through a Lambda Function URL.
 
 ## Architecture
 ```plaintext
                     ┌─────────────────┐
-                    │   API Gateway   │
-                    │   (HTTP API)    │
+                    │  Lambda URL     │
+                    │  (HTTPS)        │
                     └────────┬────────┘
                              │
                              ▼
@@ -23,7 +23,7 @@ A serverless calculator application built using AWS Lambda and Java 21. This ser
   - Subtraction
   - Multiplication
   - Division
-- RESTful API endpoint
+- Lambda Function URL endpoint (no API Gateway required)
 - Error handling for invalid operations
 - CORS enabled
 - Serverless architecture
@@ -32,6 +32,7 @@ A serverless calculator application built using AWS Lambda and Java 21. This ser
 
 - Java 21
 - AWS Lambda
+- AWS Lambda Function URLs
 - AWS SAM (Serverless Application Model)
 - Maven
 - GSON for JSON processing
@@ -39,22 +40,22 @@ A serverless calculator application built using AWS Lambda and Java 21. This ser
 ## API Usage
 
 ### Endpoint
-POST to the Lambda Function URL
+POST to the Lambda Function URL (available in CloudFormation outputs after deployment)
 
 ### Request Format
 ```json
 {
-    "number1": 10,
-    "number2": 5,
-    "operation": "add"
+    "a": 10,
+    "b": 5,
+    "op": "+"
 }
 ```
 
 Supported operations:
-- `add`
-- `subtract`
-- `multiply`
-- `divide`
+- `+` (addition)
+- `-` (subtraction)
+- `*` (multiplication)
+- `/` (division)
 
 ### Response Format
 ```json
@@ -102,49 +103,3 @@ sam deploy
 └── events/               # Test events
     └── event.json
 ```
-
-## Best Practices and Recommendations
-
-1. Error Handling
-   - Implement comprehensive error handling for all arithmetic operations
-   - Return meaningful error messages for invalid inputs
-   - Log errors appropriately using CloudWatch
-
-2. Testing
-   - Write unit tests for all calculator operations
-   - Include integration tests for API endpoints
-   - Use AWS SAM local for testing before deployment
-
-3. Security
-   - Enable AWS X-Ray for tracing
-   - Implement proper IAM roles and permissions
-   - Consider adding API authentication
-
-4. Performance
-   - Configure appropriate memory and timeout settings
-   - Implement caching if needed
-   - Monitor execution times and costs
-
-## Monitoring and Maintenance
-
-### CloudWatch Metrics to Monitor
-- Invocation count
-- Error rate
-- Duration
-- Memory usage
-
-### Logging
-- Enable detailed CloudWatch logging
-- Implement structured logging
-- Set up log retention policies
-
-## Contribution Guidelines
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit changes with clear messages
-4. Submit pull request with detailed description
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
